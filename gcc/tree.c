@@ -5182,8 +5182,7 @@ need_assembler_name_p (tree decl)
       && DECL_NAME (decl)
       && decl == TYPE_NAME (TREE_TYPE (decl))
       && !TYPE_ARTIFICIAL (TREE_TYPE (decl))
-      && ((type_with_linkage_p (TREE_TYPE (decl))
-	   && !type_in_anonymous_namespace_p (TREE_TYPE (decl)))
+      && (type_with_linkage_p (TREE_TYPE (decl))
 	  || TREE_CODE (TREE_TYPE (decl)) == INTEGER_TYPE)
       && !variably_modified_type_p (TREE_TYPE (decl), NULL_TREE))
     return !DECL_ASSEMBLER_NAME_SET_P (decl);
@@ -11579,7 +11578,7 @@ stdarg_p (const_tree fntype)
 /* Return true if TYPE has a prototype.  */
 
 bool
-prototype_p (tree fntype)
+prototype_p (const_tree fntype)
 {
   tree t;
 
@@ -12005,7 +12004,7 @@ lhd_gcc_personality (void)
    can't apply.) */
 
 bool
-virtual_method_call_p (tree target)
+virtual_method_call_p (const_tree target)
 {
   if (TREE_CODE (target) != OBJ_TYPE_REF)
     return false;
@@ -12026,7 +12025,7 @@ virtual_method_call_p (tree target)
 /* REF is OBJ_TYPE_REF, return the class the ref corresponds to.  */
 
 tree
-obj_type_ref_class (tree ref)
+obj_type_ref_class (const_tree ref)
 {
   gcc_checking_assert (TREE_CODE (ref) == OBJ_TYPE_REF);
   ref = TREE_TYPE (ref);
@@ -12124,7 +12123,7 @@ get_binfo_at_offset (tree binfo, HOST_WIDE_INT offset, tree expected_type)
 /* Returns true if X is a typedef decl.  */
 
 bool
-is_typedef_decl (tree x)
+is_typedef_decl (const_tree x)
 {
   return (x && TREE_CODE (x) == TYPE_DECL
           && DECL_ORIGINAL_TYPE (x) != NULL_TREE);
@@ -12133,7 +12132,7 @@ is_typedef_decl (tree x)
 /* Returns true iff TYPE is a type variant created for a typedef. */
 
 bool
-typedef_variant_p (tree type)
+typedef_variant_p (const_tree type)
 {
   return is_typedef_decl (TYPE_NAME (type));
 }
@@ -12549,7 +12548,6 @@ verify_type_variant (const_tree t, tree tv)
 	}
     }
   verify_variant_match (TYPE_PRECISION);
-  verify_variant_match (TYPE_NO_FORCE_BLK);
   verify_variant_match (TYPE_NEEDS_CONSTRUCTING);
   if (RECORD_OR_UNION_TYPE_P (t))
     verify_variant_match (TYPE_TRANSPARENT_AGGR);
@@ -13262,7 +13260,15 @@ verify_type (const_tree t)
 	}
     }
   
-
+  /* ipa-devirt makes an assumption that TYPE_METHOD_BASETYPE is always
+     TYPE_MAIN_VARIANT and it would be odd to add methods only to variatns
+     of a type. */
+  if (TREE_CODE (t) == METHOD_TYPE
+      && TYPE_MAIN_VARIANT (TYPE_METHOD_BASETYPE (t)) != TYPE_METHOD_BASETYPE (t))
+    {
+	error ("TYPE_METHOD_BASETYPE is not main variant");
+	error_found = true;
+    }
 
   if (error_found)
     {
