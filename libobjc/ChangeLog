@@ -1,3 +1,8 @@
+2015-05-24  Michael Darling  <darlingm@gmail.com>
+
+	PR other/66259
+	* THREADS: Reflects renaming of configure.in to configure.ac
+
 2015-05-13  Eric Botcazou  <ebotcazou@adacore.com>
 
 	* configure.ac: Remove manual SJLJ check.

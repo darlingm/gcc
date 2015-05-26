@@ -1,3 +1,12 @@
+2015-05-24  Michael Darling  <darlingm@gmail.com>
+
+	PR other/66259
+	* INSTALL: Reflects renaming of configure.in to configure.ac
+	* ltconfig: Reflects renaming of configure.in to configure.ac
+	* m4/ac_prog_javac.m4: Reflects renaming of configure.in to configure.ac
+	* m4/ac_prog_javac_works.m4: Reflects renaming of configure.in to configure.ac
+	* resource/META-INF/mimetypes.default: Reflects renaming of configure.in to configure.ac
+
 2015-05-13  Michael Haubenwallner  <michael.haubenwallner@ssi-schaefer.com>
 
 	 * Makefile.in: Regenerated with automake-1.11.6.

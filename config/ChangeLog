@@ -1,3 +1,11 @@
+2015-05-24  Michael Darling  <darlingm@gmail.com>
+
+	PR other/66259
+	* gettext.m4: Reflects renaming of configure.in to configure.ac
+	* po.m4: Reflects renaming of configure.in to configure.ac
+	* stdint.m4: Reflects renaming of configure.in to configure.ac
+	* tcl.m4: Reflects renaming of configure.in to configure.ac
+
 2015-05-13  Eric Botcazou  <ebotcazou@adacore.com>
 
 	* sjlj.m4: New file.
